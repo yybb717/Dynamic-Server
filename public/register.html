@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!--手机端请移步淘宝抄就完事-->
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+    />
+    <title>注册</title>
+  </head>
+  <body>
+    <form id="registerForm">
+      <div>
+        <label>用户名 <input type="text" name="name"/></label>
+      </div>
+      <div>
+        <label>密码 <input type="password" name="password"/></label>
+      </div>
+      <div><button type="submit">注册</button></div>
+    </form>
+
+    <!--先引用jQuery后面的js才可以用-->
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- 直接在html里面写js-->
+    <!--监听from表单元素的点击submit事件，当click事件被触发时执行函数
+    ①阻止form表单的默认事件；
+    ②找到input的name为name的元素，取该元素的用户输入的值，命名为name；同理找到input的name为password的元素，取该元素的用户输入的值，命名为password
+    ③直接用jQuery发Ajax请求：POST请求，请求的url是/register，传给服务器的数据也就是请求体内容为name和password组成的json字符串，请求体的类型也就是传给服务器的数据类型为json
+    -->
+    <!--阻止默认事件-->
+    <script>
+      const $form = $("#registerForm");
+      $form.on("submit", e => {
+        e.preventDefault();
+        const name = $form.find("input[name=name]").val();
+        const password = $form.find("input[name=password]").val();
+        console.log(name, password);
+        $.ajax({
+          method: "POST",
+          url: "/register",
+          contentType: "text/json; charset=UTF-8",
+          data: JSON.stringify({ name, password })
+        }).then(
+          () => {
+            alert("注册成功");
+            location.href = "/sign_in.html";
+          },
+          () => {}
+        );
+      });
+    </script>
+  </body>
+</html>
